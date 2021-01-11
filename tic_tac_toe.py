@@ -10,6 +10,15 @@
 
 import numpy as np
 import time
+import tkinter as tk
+
+
+def game_gui():
+    window = tk.Tk()
+    greeting = tk.Label(text="TIC TAC TOE")
+    greeting.pack()
+    window.mainloop()
+    return
 
 
 def create_board():
@@ -85,6 +94,8 @@ def tic_tac_toe():
     # play time measurement
     # welcome and rules
     print('Player one is beginning and he has ONE symbol')
+
+    game_gui()
 
     print_board(board)
 
