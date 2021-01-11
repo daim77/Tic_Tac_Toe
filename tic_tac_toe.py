@@ -20,7 +20,11 @@ def print_board(board):
     print(board)
 
 
-def player_turn_order():
+def player_turn_order(order):
+    if order == 1:
+        print('Player ONE')
+    else:
+        print('Player TWO')
     player_row = int(input('row: '))
     player_colomn = int(input('colomn: '))
     if player_row > 4 or player_colomn > 4:
@@ -28,13 +32,14 @@ def player_turn_order():
     return player_row, player_colomn
 
 
-def free_position_test(order, player_row, player_colomn, board):
+def movement(order, player_row, player_colomn, board):
     if board[player_row][player_colomn] == ' ' and order == 1:
-        board[player_row][player_colomn] = '0'
-    if board[player_row][player_colomn] == ' ' and order == -1:
         board[player_row][player_colomn] = '1'
         order *= -1
-    return board, order
+    if board[player_row][player_colomn] == ' ' and order == -1:
+        board[player_row][player_colomn] = '0'
+        order *= -1
+    return order, board
 
 
 def diagonal_test(board):
@@ -48,26 +53,45 @@ def diagonal_test(board):
         diagonal_string_rot = ''.join(diagonal_line_rot)
 
         if diagonal_string.partition('111')[1] == '111' or diagonal_string_rot.partition('111')[1] == '111':
-            print('Winner is player TWO')
-        if diagonal_string.partition('000')[1] == '000' or diagonal_string_rot.partition('000')[1] == '000':
             print('Winner is player ONE')
+            exit()
+        if diagonal_string.partition('000')[1] == '000' or diagonal_string_rot.partition('000')[1] == '000':
+            print('Winner is player TWO')
+            exit()
+
+
+def horizontal_test(board):
+    for line in board:
+        horizonal_string = ''.join(line)
+        if horizonal_string.partition('111')[1] == '111':
+            print('Winner is player ONE')
+            exit()
+        if horizonal_string.partition('000')[1] == '000':
+            print('Winner is player TWO')
+            exit()
 
 
 def tic_tac_toe():
     order = 1
     board = create_board()
-
     # welcome and rules
+    print('Player one is beginning and he has ONE symbol')
 
     print_board(board)
 
-    player_turn_order()
+    while True:
+        coordinates = player_turn_order(order)
+        player_row = coordinates[0]
+        player_colomn = coordinates[1]
 
-    free_position_test(order, player_row, player_colomn, board)
+        board_after_mov = movement(order, player_row, player_colomn, board)
+        order = board_after_mov[0]
+        board = board_after_mov[1]
 
-    print_board(board)
+        print_board(board)
 
-    diagonal_test(board)
+        diagonal_test(board)
+        horizontal_test(board)
 
 
 tic_tac_toe()
