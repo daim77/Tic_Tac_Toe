@@ -9,6 +9,7 @@
 #  }
 
 import numpy as np
+import time
 
 
 def create_board():
@@ -21,12 +22,19 @@ def print_board(board):
 
 
 def player_turn_order(order):
+    start_time_turn = time.time()
+
     if order == 1:
         print('Player ONE')
     else:
         print('Player TWO')
     player_row = int(input('row: '))
     player_colomn = int(input('colomn: '))
+
+    if time.time() - start_time_turn > 100:
+        print('time is over')
+        exit()
+
     if player_row > 4 or player_colomn > 4:
         exit()
     return player_row, player_colomn
@@ -74,6 +82,7 @@ def horizontal_test(board):
 def tic_tac_toe():
     order = 1
     board = create_board()
+    # play time measurement
     # welcome and rules
     print('Player one is beginning and he has ONE symbol')
 
