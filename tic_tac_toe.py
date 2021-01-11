@@ -10,15 +10,6 @@
 
 import numpy as np
 import time
-import tkinter as tk
-
-
-def game_gui():
-    window = tk.Tk()
-    greeting = tk.Label(text="TIC TAC TOE")
-    greeting.pack()
-    window.mainloop()
-    return
 
 
 def create_board():
@@ -37,8 +28,13 @@ def player_turn_order(order):
         print('Player ONE')
     else:
         print('Player TWO')
-    player_row = int(input('row: '))
-    player_colomn = int(input('colomn: '))
+    try:
+        player_row = int(input('row: '))
+        player_colomn = int(input('colomn: '))
+    except (TypeError, ValueError):
+        print('Coordinates are whole positive numbers!')
+        exit()
+        return
 
     if time.time() - start_time_turn > 100:
         print('time is over')
@@ -95,7 +91,7 @@ def tic_tac_toe():
     # welcome and rules
     print('Player one is beginning and he has ONE symbol')
 
-    game_gui()
+    # game_gui()
 
     print_board(board)
 
