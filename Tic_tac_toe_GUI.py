@@ -3,7 +3,8 @@ import numpy as np
 
 
 def create_board():
-    global board
+    global board, order
+    order = 1
     board = np.full((5, 5), ' ')
     return board
 
@@ -73,8 +74,15 @@ for board_row in range(5):
             width=8,
             command=movement
         )
-        board_position.pack(side='bottom')
+        board_position.pack()
 
+player_turn = tk.Label(text=f"Player {order} turn", font=('normal', 22, 'bold'))
+player_turn.grid(row=6, column=1, columnspan=3)
+
+reset_button = tk.Button(text='RESTART', command=create_board, fg='red')
+reset_button.grid(row=7, column=2)
+reset_button = tk.Button(text='STOP', command=exit, fg='red')
+reset_button.grid(row=7, column=3)
 
 diagonal_test()
 horizontal_test()
