@@ -30,7 +30,7 @@ def player_turn_order(order):
         print('Player TWO')
     try:
         player_row = int(input('row: '))
-        player_colomn = int(input('colomn: '))
+        player_column = int(input('column: '))
     except (TypeError, ValueError):
         print('Coordinates are whole positive numbers!')
         exit()
@@ -40,17 +40,17 @@ def player_turn_order(order):
         print('time is over')
         exit()
 
-    if player_row > 4 or player_colomn > 4:
+    if player_row > 4 or player_column > 4:
         exit()
-    return player_row, player_colomn
+    return player_row, player_column
 
 
-def movement(order, player_row, player_colomn, board):
-    if board[player_row][player_colomn] == ' ' and order == 1:
-        board[player_row][player_colomn] = '1'
+def movement(order, player_row, player_column, board):
+    if board[player_row][player_column] == ' ' and order == 1:
+        board[player_row][player_column] = '1'
         order *= -1
-    if board[player_row][player_colomn] == ' ' and order == -1:
-        board[player_row][player_colomn] = '0'
+    if board[player_row][player_column] == ' ' and order == -1:
+        board[player_row][player_column] = '0'
         order *= -1
     return order, board
 
@@ -98,9 +98,9 @@ def tic_tac_toe():
     while True:
         coordinates = player_turn_order(order)
         player_row = coordinates[0]
-        player_colomn = coordinates[1]
+        player_column = coordinates[1]
 
-        board_after_mov = movement(order, player_row, player_colomn, board)
+        board_after_mov = movement(order, player_row, player_column, board)
         order = board_after_mov[0]
         board = board_after_mov[1]
 

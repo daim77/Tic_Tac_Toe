@@ -9,12 +9,12 @@ def create_board():
 
 
 def movement():
-    global board_row, board_colomn, order
-    if board[board_row][board_colomn] == ' ' and order == 1:
-        board[board_row][board_colomn] = '1'
+    global board_row, board_column, order
+    if board[board_row][board_column] == ' ' and order == 1:
+        board[board_row][board_column] = '1'
         order *= -1
-    if board[board_row][board_colomn] == ' ' and order == -1:
-        board[board_row][board_colomn] = '0'
+    if board[board_row][board_column] == ' ' and order == -1:
+        board[board_row][board_column] = '0'
         order *= -1
     return
 
@@ -54,27 +54,26 @@ order = 1
 board = create_board()
 
 window = tk.Tk()
-
 window.geometry('500x500')
 window.title('Tic Tac Toe')
 
-
 for board_row in range(5):
-    for board_colomn in range(5):
-        frame = tk.Frame(
+    for board_column in range(5):
+        frame_grid = tk.Frame(
             master=window,
             relief=tk.RAISED,
             borderwidth=1,
+            bg='blue',
         )
-        frame.grid(row=board_row, column=board_colomn)
+        frame_grid.grid(row=board_row, column=board_column)
         board_position = tk.Button(
-            master=frame,
-            text=board[board_row][board_colomn],
+            master=frame_grid,
+            text=board[board_row][board_column],
             height=4,
             width=8,
             command=movement
         )
-        board_position.pack(side='top')
+        board_position.pack(side='bottom')
 
 
 diagonal_test()
