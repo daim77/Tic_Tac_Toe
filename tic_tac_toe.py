@@ -12,25 +12,36 @@ import numpy as np
 import time
 
 
+def rules():
+    print('''
+    Çomplex Tic-tac-toe 5-by-5 grid with each player trying to get three in a row - doesn‘t matter 
+    if diagonally, horiyontally or vertically.
+    If no winner = pat.
+    Insert row number, column number.
+    Player one is beginning with symbol "X. The second one goes with symbol "O"
+    ''')
+
+
 def create_board():
     board = np.full((5, 5), ' ')
     return board
 
 
 def print_board(board):
+
     print(board)
 
 
 def player_turn_order(order):
     start_time_turn = time.time()
 
-    if order == 1:
-        print('Player ONE')
+    if order == 'X':
+        print('Player X')
     else:
-        print('Player TWO')
+        print('Player O')
     try:
-        player_row = int(input('row: '))
-        player_column = int(input('column: '))
+        player_row = int(input('row: ')) - 1
+        player_column = int(input('column: ')) - 1
     except (TypeError, ValueError):
         print('Coordinates are whole positive numbers!')
         exit()
@@ -40,18 +51,18 @@ def player_turn_order(order):
         print('time is over')
         exit()
 
-    if player_row > 4 or player_column > 4:
+    if player_row > 5 or player_column > 5:
         exit()
     return player_row, player_column
 
 
 def movement(order, player_row, player_column, board):
-    if board[player_row][player_column] == ' ' and order == 1:
-        board[player_row][player_column] = '1'
-        order *= -1
-    if board[player_row][player_column] == ' ' and order == -1:
+    if board[player_row][player_column] == ' ' and order == 'X':
+        board[player_row][player_column] = 'X'
+        order = 'O'
+    if board[player_row][player_column] == ' ' and order == 'O':
         board[player_row][player_column] = '0'
-        order *= -1
+        order = 'X'
     return order, board
 
 
@@ -65,33 +76,41 @@ def diagonal_test(board):
         diagonal_line_rot = np.diag(board_rot, k=k_diag)
         diagonal_string_rot = ''.join(diagonal_line_rot)
 
-        if diagonal_string.partition('111')[1] == '111' or diagonal_string_rot.partition('111')[1] == '111':
-            print('Winner is player ONE')
+        if diagonal_string.partition('XXX')[1] == 'XXX' or diagonal_string_rot.partition('XXX')[1] == 'XXX':
+            print('Winner is player X')
             exit()
-        if diagonal_string.partition('000')[1] == '000' or diagonal_string_rot.partition('000')[1] == '000':
-            print('Winner is player TWO')
+        if diagonal_string.partition('OOO')[1] == 'OOO' or diagonal_string_rot.partition('OOO')[1] == 'OOO':
+            print('Winner is player O')
             exit()
 
 
-def horizontal_test(board):
+def line_test(board):
     for line in board:
         horizontal_string = ''.join(line)
-        if horizontal_string.partition('111')[1] == '111':
-            print('Winner is player ONE')
+        if horizontal_string.partition('XXX')[1] == 'XXX':
+            print('Winner is player X')
             exit()
-        if horizontal_string.partition('000')[1] == '000':
-            print('Winner is player TWO')
+        if horizontal_string.partition('OOO')[1] == 'OOO':
+            print('Winner is player O')
+            exit()
+    board_rot = np.rot90(board)
+    for line in board_rot:
+        vertical_string = ''.join(line)
+        if vertical_string.partition('XXX')[1] == 'XXX':
+            print('Winner is player X')
+            exit()
+        if vertical_string.partition('OOO')[1] == 'OOO':
+            print('Winner is player O')
             exit()
 
 
 def tic_tac_toe():
-    order = 1
+    order = 'X'
     board = create_board()
     # play time measurement
     # welcome and rules
-    print('Player one is beginning and he has ONE symbol')
+    print('Player X is beginning and he has X symbol')
 
-    # game_gui()
 
     print_board(board)
 
@@ -107,7 +126,7 @@ def tic_tac_toe():
         print_board(board)
 
         diagonal_test(board)
-        horizontal_test(board)
+        line_test(board)
         # vertical test
 
 
