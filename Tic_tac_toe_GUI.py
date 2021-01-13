@@ -9,19 +9,21 @@ def create_board():
     return board
 
 
-def movement():
-    global board_row, board_column, order
-    if board[board_row][board_column] == ' ' and order == 1:
-        board[board_row][board_column] = '1'
+def movement(board_row, board_column):
+    global board, order
+    print(board_row, board_column)
+    if board[board_row][board_column]['text'] == ' ' and order == 1:
+        board[board_row][board_column]['text'] = '1'
         order *= -1
-    if board[board_row][board_column] == ' ' and order == -1:
-        board[board_row][board_column] = '0'
+    if board[board_row][board_column]['text'] == ' ' and order == -1:
+        board[board_row][board_column]['text'] = '0'
         order *= -1
-    return
+    return board
 
 
 def diagonal_test():
     global board
+    board = np.array(board)
     board_rot = np.rot90(board)
     for k_diag in range(-2, 3):
 
@@ -53,38 +55,28 @@ def horizontal_test():
 
 order = 1
 board = create_board()
-
 window = tk.Tk()
 window.geometry('500x500')
 window.title('Tic Tac Toe')
 
-for board_row in range(5):
-    for board_column in range(5):
-        frame_grid = tk.Frame(
-            master=window,
-            relief=tk.RAISED,
-            borderwidth=1,
-            bg='blue',
-        )
-        frame_grid.grid(row=board_row, column=board_column)
-        board_position = tk.Button(
-            master=frame_grid,
-            text=board[board_row][board_column],
-            height=4,
-            width=8,
-            command=movement
-        )
-        board_position.pack()
+board = board.tolist()
+
+for r in range(5):
+    for c in range(5):
+        board[r][c] = tk.Button(text=board[r][c], height=4, width=8, command=lambda: movement(r, c))
+        board[r][c].grid(row=r, column=c)
+
 
 player_turn = tk.Label(text=f"Player {order} turn", font=('normal', 22, 'bold'))
 player_turn.grid(row=6, column=1, columnspan=3)
 
 reset_button = tk.Button(text='RESTART', command=create_board, fg='red')
-reset_button.grid(row=7, column=2)
-reset_button = tk.Button(text='STOP', command=exit, fg='red')
-reset_button.grid(row=7, column=3)
+reset_button.grid(row=7, column=0)
 
-diagonal_test()
-horizontal_test()
+reset_button = tk.Button(text='STOP', command=exit, fg='red')
+reset_button.grid(row=7, column=4)
+
+# diagonal_test()
+# horizontal_test()
 
 window.mainloop()
