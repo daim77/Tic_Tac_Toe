@@ -108,6 +108,7 @@ def tic_tac_toe():
 
         diagonal_test(board)
         horizontal_test(board)
+        # vertical test
 
 
 tic_tac_toe()
