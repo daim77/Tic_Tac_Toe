@@ -9,20 +9,37 @@ def create_board():
     return board
 
 
+def mouse_click(event):
+    # x, y = event.x, event.y
+    x = root.winfo_pointerx() - root.winfo_rootx()
+    y = root.winfo_pointery() - root.winfo_rooty()
+    print(x, y)
+    board_row = y // 100
+    board_column = x // 100
+    if board_row > 4 or board_column > 4:
+        return
+    print(board_row, board_column)
+    print()
+    movement(board_row, board_column)
+
+
 def movement(board_row, board_column):
     global board, order
-    if board[board_row][board_column]['text'] == ' ' and order == 1:
-        board[board_row][board_column].config(text='1')
+    print('order', order, board)
+    if board[board_row][board_column] == ' ' and order == 1:
+        board[board_row][board_column] = 'X'
         order *= -1
-    if board[board_row][board_column]['text'] == ' ' and order == -1:
-        board[board_row][board_column]['text'] = '0'
+    if board[board_row][board_column] == ' ' and order == -1:
+        board[board_row][board_column] = 'O'
         order *= -1
+    print('order', order, board)
+    diagonal_test()
+    line_test()
     return board
 
 
 def diagonal_test():
     global board
-    board = np.array(board)
     board_rot = np.rot90(board)
     for k_diag in range(-2, 3):
 
@@ -32,44 +49,54 @@ def diagonal_test():
         diagonal_line_rot = np.diag(board_rot, k=k_diag)
         diagonal_string_rot = ''.join(diagonal_line_rot)
 
-        if diagonal_string.partition('111')[1] == '111' or diagonal_string_rot.partition('111')[1] == '111':
+        if diagonal_string.partition('XXX')[1] == 'XXX' or diagonal_string_rot.partition('XXX')[1] == 'XXX':
             print('Winner is player ONE')
             exit()
-        if diagonal_string.partition('000')[1] == '000' or diagonal_string_rot.partition('000')[1] == '000':
+        if diagonal_string.partition('OOO')[1] == 'OOO' or diagonal_string_rot.partition('OOO')[1] == 'OOO':
             print('Winner is player TWO')
             exit()
 
 
-def horizontal_test():
+def line_test():
     global board
     for line in board:
-        horizonal_string = ''.join(line)
-        if horizonal_string.partition('111')[1] == '111':
+        horizontal_string = ''.join(line)
+        if horizontal_string.partition('XXX')[1] == 'XXX':
             print('Winner is player ONE')
             exit()
-        if horizonal_string.partition('000')[1] == '000':
+        elif horizontal_string.partition('OOO')[1] == 'OOO':
+            print('Winner is player TWO')
+            exit()
+
+    board_rot = np.rot90(board)
+    for line in board_rot:
+        horizontal_string = ''.join(line)
+        if horizontal_string.partition('XXX')[1] == 'XXX':
+            print('Winner is player ONE')
+            exit()
+        elif horizontal_string.partition('OOO')[1] == 'OOO':
             print('Winner is player TWO')
             exit()
 
 
 order = 1
 board = create_board()
-window = tk.Tk()
-window.geometry('600x600')
-window.title('Tic Tac Toe')
+root = tk.Tk()
+root.geometry('600x600')
+root.title('Tic Tac Toe')
 
 board = board.tolist()
 
 for i in range(5):
     for j in range(5):
-        board[i][j] = tk.Button(
+        board_field = tk.Button(
             text=board[i][j],
             font=('normal', 40, 'normal'),
             height=2, width=4,
-            command=lambda r=i, c=j: movement(r, c)
         )
-        board[i][j].grid(row=i, column=j)
+        board_field.grid(row=i, column=j)
 
+root.bind('<Button-1>', mouse_click)
 
 player_turn = tk.Label(text=f"Player {order} turn", font=('normal', 22, 'bold'))
 player_turn.grid(row=6, column=1, columnspan=3)
@@ -80,7 +107,5 @@ reset_button.grid(row=7, column=0)
 reset_button = tk.Button(text='STOP', command=exit, fg='red')
 reset_button.grid(row=7, column=4)
 
-# diagonal_test()
-# horizontal_test()
 
-window.mainloop()
+root.mainloop()
