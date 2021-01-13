@@ -1,11 +1,5 @@
 # =====Martin Danek™=====
 # Project Engeto number 2
-# {rules,
-#  5x5 array,
-#  2 players,
-#  time measurement
-#  who is winner,
-#  }
 
 import numpy as np
 import time
@@ -37,7 +31,7 @@ def create_board():
 
 def print_board(board):
     print()
-    print('=' * 100)
+    print('=' * 50)
     print('      |  1  |  2  |  3  |  4  |  5  |')
     for i in range(5):
         line_string = ''
@@ -46,12 +40,10 @@ def print_board(board):
         print('.' * 37)
         print('|' + '  ' + str(i + 1) + '  ' + '|' + line_string)
     print('.' * 37)
-    print('=' * 100)
+    print('=' * 50)
 
 
 def player_turn_order(order):
-    start_time_turn = time.time()
-
     while True:
         if order == 'X':
             print('Player X')
@@ -63,10 +55,6 @@ def player_turn_order(order):
         except (TypeError, ValueError):
             print('Place your turn within five rows or five columns')
             continue
-
-        if time.time() - start_time_turn > 100:
-            print('time is over')
-            exit()
 
         if player_row > 4 or player_column > 4:
             print('STOP')
@@ -85,8 +73,10 @@ def movement(order, player_row, player_column, board):
     return order, board
 
 
-def diagonal_test(board):
+def diagonal_test(board, start_time_turn):
     board_rot = np.rot90(board)
+    total_time = time.time() - start_time_turn
+
     for k_diag in range(-1, 2):
 
         diagonal_line = np.diag(board, k=k_diag)
@@ -96,43 +86,52 @@ def diagonal_test(board):
         diagonal_string_rot = ''.join(diagonal_line_rot)
 
         if diagonal_string.partition('XXXX')[1] == 'XXXX' or diagonal_string_rot.partition('XXXX')[1] == 'XXXX':
-            print('Winner is player X')
+            print('*' * 50)
+            print('Winner is player X. Total game time was: ', int(total_time), 's')
             exit()
         if diagonal_string.partition('OOOO')[1] == 'OOOO' or diagonal_string_rot.partition('OOOO')[1] == 'OOOO':
-            print('Winner is player O')
+            print('*' * 50)
+            print('Winner is player O. Total game time was: ', int(total_time), 's')
             exit()
 
 
-def line_test(board):
+def line_test(board, start_time_turn):
+    total_time = time.time() - start_time_turn
     for line in board:
         horizontal_string = ''.join(line)
         if horizontal_string.partition('XXXX')[1] == 'XXXX':
-            print('Winner is player X')
+            print('*' * 50)
+            print('Winner is player X. Total playing time was: ', int(total_time), 's')
             exit()
         if horizontal_string.partition('OOOO')[1] == 'OOOO':
-            print('Winner is player O')
+            print('*' * 50)
+            print('Winner is player O. Total playing time was: ', int(total_time), 's')
             exit()
     board_rot = np.rot90(board)
     for line in board_rot:
         vertical_string = ''.join(line)
         if vertical_string.partition('XXXX')[1] == 'XXXX':
-            print('Winner is player X')
+            print('*' * 50)
+            print('Winner is player X. Total playing time was: ', int(total_time), 's')
             exit()
         if vertical_string.partition('OOOO')[1] == 'OOOO':
-            print('Winner is player O')
+            print('*' * 50)
+            print('Winner is player O. Total playing time was: ', int(total_time), 's')
             exit()
 
 
-def tie_test(board):
+def tie_test(board, start_time_turn):
+    total_time = time.time() - start_time_turn
     player_x = np.count_nonzero(board == 'X')
     player_o = np.count_nonzero(board == 'O')
     if player_x + player_o == 25:
-        print('*' * 100)
-        print('{:^100}'.format('This is a tie'))
+        print('*' * 50)
+        print('{:^100}'.format(f'This is a tie. Total playing time was: {total_time}s.'))
     return
 
 
 def tic_tac_toe():
+    start_time_turn = time.time()
     rules()
     order = 'X'
     board = create_board()
@@ -150,9 +149,9 @@ def tic_tac_toe():
 
         print_board(board)
 
-        diagonal_test(board)
-        line_test(board)
-        tie_test(board)
+        diagonal_test(board, start_time_turn)
+        line_test(board, start_time_turn)
+        tie_test(board, start_time_turn)
 
 
 tic_tac_toe()
