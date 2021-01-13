@@ -75,11 +75,11 @@ def diagonal_test(board):
 
 def horizontal_test(board):
     for line in board:
-        horizonal_string = ''.join(line)
-        if horizonal_string.partition('111')[1] == '111':
+        horizontal_string = ''.join(line)
+        if horizontal_string.partition('111')[1] == '111':
             print('Winner is player ONE')
             exit()
-        if horizonal_string.partition('000')[1] == '000':
+        if horizontal_string.partition('000')[1] == '000':
             print('Winner is player TWO')
             exit()
 
