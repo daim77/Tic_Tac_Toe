@@ -13,13 +13,21 @@ import time
 
 
 def rules():
+    print('*' * 100)
+    print('{:^100}'.format('TIC TAC TOE'))
+    print('*' * 100)
     print('''
-    Çomplex Tic-tac-toe 5-by-5 grid with each player trying to get three in a row - doesn‘t matter 
-    if diagonally, horiyontally or vertically.
-    If no winner = pat.
-    Insert row number, column number.
-    Player one is beginning with symbol "X. The second one goes with symbol "O"
+    Welcome in complex Tic-tac-toe game 5-by-5 grid difficulty.
+    Each player trying to get three same symbols in a row. 
+    Doesn‘t matter if diagonally, horizontally or vertically.
+    If no winner after 25 turns - It‘s a tie.
+    Each player is called for his/her turn one by one. If you are called:
+    Insert row number and column number afterwards.
+    The first player is beginning with symbol "X. The second one goes with symbol "O" and so on...
+    
+    GOOD LUCK!!!
     ''')
+    print('*' * 100)
 
 
 def create_board():
@@ -61,7 +69,7 @@ def movement(order, player_row, player_column, board):
         board[player_row][player_column] = 'X'
         order = 'O'
     if board[player_row][player_column] == ' ' and order == 'O':
-        board[player_row][player_column] = '0'
+        board[player_row][player_column] = 'O'
         order = 'X'
     return order, board
 
@@ -104,7 +112,17 @@ def line_test(board):
             exit()
 
 
+def tie_test(board):
+    player_x = np.count_nonzero(board == 'X')
+    player_o = np.count_nonzero(board == 'O')
+    if player_x + player_o == 25:
+        print('*' * 100)
+        print('{:^100}'.format('This is a tie'))
+    return
+
+
 def tic_tac_toe():
+    rules()
     order = 'X'
     board = create_board()
     # play time measurement
@@ -127,7 +145,7 @@ def tic_tac_toe():
 
         diagonal_test(board)
         line_test(board)
-        # vertical test
+        tie_test(board)
 
 
 tic_tac_toe()
