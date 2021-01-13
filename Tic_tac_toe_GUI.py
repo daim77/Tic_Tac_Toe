@@ -6,6 +6,14 @@ def create_board():
     global board, order
     order = 1
     board = np.full((5, 5), ' ')
+    for i in range(5):
+        for j in range(5):
+            board_field = tk.Button(
+                text=board[i][j],
+                font=('normal', 40, 'normal'),
+                height=2, width=4,
+            )
+            board_field.grid(row=i, column=j)
     return board
 
 
@@ -33,8 +41,18 @@ def movement(board_row, board_column):
         board[board_row][board_column] = 'O'
         order *= -1
     print('order', order, board)
+    for i in range(5):
+        for j in range(5):
+            board_field = tk.Button(
+                text=board[i][j],
+                font=('normal', 40, 'normal'),
+                height=2, width=4,
+            )
+            board_field.grid(row=i, column=j)
     diagonal_test()
     line_test()
+    player_turn = tk.Label(text=f"Player {order} turn", font=('normal', 22, 'bold'))
+    player_turn.grid(row=6, column=1, columnspan=3)
     return board
 
 
@@ -79,27 +97,14 @@ def line_test():
             exit()
 
 
-order = 1
-board = create_board()
 root = tk.Tk()
 root.geometry('600x600')
 root.title('Tic Tac Toe')
 
-board = board.tolist()
-
-for i in range(5):
-    for j in range(5):
-        board_field = tk.Button(
-            text=board[i][j],
-            font=('normal', 40, 'normal'),
-            height=2, width=4,
-        )
-        board_field.grid(row=i, column=j)
+order = 1
+board = create_board()
 
 root.bind('<Button-1>', mouse_click)
-
-player_turn = tk.Label(text=f"Player {order} turn", font=('normal', 22, 'bold'))
-player_turn.grid(row=6, column=1, columnspan=3)
 
 reset_button = tk.Button(text='RESTART', command=create_board, fg='red')
 reset_button.grid(row=7, column=0)
