@@ -14,6 +14,8 @@ def create_board():
                 height=2, width=4,
             )
             board_field.grid(row=i, column=j)
+    player_turn = tk.Label(text=f"Player {order} turn", font=('normal', 18, 'bold'))
+    player_turn.grid(row=7, column=1, columnspan=3)
     return board
 
 
@@ -21,26 +23,22 @@ def mouse_click(event):
     # x, y = event.x, event.y
     x = root.winfo_pointerx() - root.winfo_rootx()
     y = root.winfo_pointery() - root.winfo_rooty()
-    print(x, y)
     board_row = y // 100
     board_column = x // 100
     if board_row > 4 or board_column > 4:
         return
-    print(board_row, board_column)
-    print()
+
     movement(board_row, board_column)
 
 
 def movement(board_row, board_column):
     global board, order
-    print('order', order, board)
     if board[board_row][board_column] == ' ' and order == 1:
         board[board_row][board_column] = 'X'
         order *= -1
     if board[board_row][board_column] == ' ' and order == -1:
         board[board_row][board_column] = 'O'
         order *= -1
-    print('order', order, board)
     for i in range(5):
         for j in range(5):
             board_field = tk.Button(
@@ -49,10 +47,12 @@ def movement(board_row, board_column):
                 height=2, width=4,
             )
             board_field.grid(row=i, column=j)
+
     diagonal_test()
     line_test()
+
     player_turn = tk.Label(text=f"Player {order} turn", font=('normal', 22, 'bold'))
-    player_turn.grid(row=6, column=1, columnspan=3)
+    player_turn.grid(row=7, column=1, columnspan=3)
     return board
 
 
@@ -106,11 +106,11 @@ board = create_board()
 
 root.bind('<Button-1>', mouse_click)
 
-reset_button = tk.Button(text='RESTART', command=create_board, fg='red')
-reset_button.grid(row=7, column=0)
+reset_button = tk.Button(text='RESTART', font=('normal', 18, 'bold'), command=create_board, fg='red')
+reset_button.grid(row=8, column=1)
 
-reset_button = tk.Button(text='STOP', command=exit, fg='red')
-reset_button.grid(row=7, column=4)
+reset_button = tk.Button(text='STOP', font=('normal', 18, 'bold'), command=exit, fg='red')
+reset_button.grid(row=8, column=3)
 
 
 root.mainloop()
