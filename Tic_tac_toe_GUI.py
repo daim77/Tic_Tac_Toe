@@ -4,7 +4,7 @@ import numpy as np
 
 def create_board():
     global board, order
-    order = 1
+    order = 'X'
     board = np.full((5, 5), ' ')
     for i in range(5):
         for j in range(5):
@@ -14,7 +14,7 @@ def create_board():
                 height=2, width=4,
             )
             board_field.grid(row=i, column=j)
-    player_turn = tk.Label(text=f"Player {order} turn", font=('normal', 18, 'bold'))
+    player_turn = tk.Label(text=f"Player‘s {order} turn", font=('normal', 18, 'bold'))
     player_turn.grid(row=7, column=1, columnspan=3)
     return board
 
@@ -33,12 +33,12 @@ def mouse_click(event):
 
 def movement(board_row, board_column):
     global board, order
-    if board[board_row][board_column] == ' ' and order == 1:
+    if board[board_row][board_column] == ' ' and order == 'X':
         board[board_row][board_column] = 'X'
-        order *= -1
-    if board[board_row][board_column] == ' ' and order == -1:
+        order = 'O'
+    if board[board_row][board_column] == ' ' and order == 'O':
         board[board_row][board_column] = 'O'
-        order *= -1
+        order = 'X'
     for i in range(5):
         for j in range(5):
             board_field = tk.Button(
@@ -51,7 +51,7 @@ def movement(board_row, board_column):
     diagonal_test()
     line_test()
 
-    player_turn = tk.Label(text=f"Player {order} turn", font=('normal', 22, 'bold'))
+    player_turn = tk.Label(text=f"Player‘s {order} turn", font=('normal', 22, 'bold'))
     player_turn.grid(row=7, column=1, columnspan=3)
     return board
 
@@ -68,11 +68,19 @@ def diagonal_test():
         diagonal_string_rot = ''.join(diagonal_line_rot)
 
         if diagonal_string.partition('XXX')[1] == 'XXX' or diagonal_string_rot.partition('XXX')[1] == 'XXX':
-            print('Winner is player ONE')
-            exit()
+            player_turn = tk.Label(
+                text="Winner is player X",
+                font=('normal', 32, 'bold'),
+                fg='yellow',
+                bg='black')
+            player_turn.grid(row=2, column=0, columnspan=5)
         if diagonal_string.partition('OOO')[1] == 'OOO' or diagonal_string_rot.partition('OOO')[1] == 'OOO':
-            print('Winner is player TWO')
-            exit()
+            player_turn = tk.Label(
+                text="Winner is player O",
+                font=('normal', 32, 'bold'),
+                fg='yellow',
+                bg='black')
+            player_turn.grid(row=2, column=0, columnspan=5)
 
 
 def line_test():
@@ -80,21 +88,37 @@ def line_test():
     for line in board:
         horizontal_string = ''.join(line)
         if horizontal_string.partition('XXX')[1] == 'XXX':
-            print('Winner is player ONE')
-            exit()
+            player_turn = tk.Label(
+                text="Winner is player X",
+                font=('normal', 32, 'bold'),
+                fg='yellow',
+                bg='black')
+            player_turn.grid(row=2, column=0, columnspan=5)
         elif horizontal_string.partition('OOO')[1] == 'OOO':
-            print('Winner is player TWO')
-            exit()
+            player_turn = tk.Label(
+                text="Winner is player O",
+                font=('normal', 32, 'bold'),
+                fg='yellow',
+                bg='black')
+            player_turn.grid(row=2, column=0, columnspan=5)
 
     board_rot = np.rot90(board)
     for line in board_rot:
         horizontal_string = ''.join(line)
         if horizontal_string.partition('XXX')[1] == 'XXX':
-            print('Winner is player ONE')
-            exit()
+            player_turn = tk.Label(
+                text="Winner is player X",
+                font=('normal', 32, 'bold'),
+                fg='yellow',
+                bg='black')
+            player_turn.grid(row=2, column=0, columnspan=5)
         elif horizontal_string.partition('OOO')[1] == 'OOO':
-            print('Winner is player TWO')
-            exit()
+            player_turn = tk.Label(
+                text="Winner is player O",
+                font=('normal', 32, 'bold'),
+                fg='yellow',
+                bg='black')
+            player_turn.grid(row=2, column=0, columnspan=5)
 
 
 root = tk.Tk()
