@@ -21,7 +21,8 @@ def rules():
     Doesn‘t matter if diagonally, horizontally or vertically.
     If no winner after 25 turns - It‘s a tie.
     Each player is called for his/her turn one by one. If you are called:
-    Insert row number and column number afterwards.
+    Insert row number and column number afterwards within 1 and 5.
+    Higher number means STOP!
     The first player is beginning with symbol "X. The second one goes with symbol "O" and so on...
     
     GOOD LUCK!!!
@@ -51,25 +52,27 @@ def print_board(board):
 def player_turn_order(order):
     start_time_turn = time.time()
 
-    if order == 'X':
-        print('Player X')
-    else:
-        print('Player O')
-    try:
-        player_row = int(input('row: ')) - 1
-        player_column = int(input('column: ')) - 1
-    except (TypeError, ValueError):
-        print('Coordinates are whole positive numbers!')
-        exit()
-        return
+    while True:
+        if order == 'X':
+            print('Player X')
+        else:
+            print('Player O')
+        try:
+            player_row = int(input('row: ')) - 1
+            player_column = int(input('column: ')) - 1
+        except (TypeError, ValueError):
+            print('Place your turn within five rows or five columns')
+            continue
 
-    if time.time() - start_time_turn > 100:
-        print('time is over')
-        exit()
+        if time.time() - start_time_turn > 100:
+            print('time is over')
+            exit()
 
-    if player_row > 4 or player_column > 4:
-        exit()
-    return player_row, player_column
+        if player_row > 4 or player_column > 4:
+            print('STOP')
+            print()
+            exit()
+        return player_row, player_column
 
 
 def movement(order, player_row, player_column, board):
