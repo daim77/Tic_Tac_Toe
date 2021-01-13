@@ -11,9 +11,8 @@ def create_board():
 
 def movement(board_row, board_column):
     global board, order
-    print(board_row, board_column)
     if board[board_row][board_column]['text'] == ' ' and order == 1:
-        board[board_row][board_column]['text'] = '1'
+        board[board_row][board_column].config(text='1')
         order *= -1
     if board[board_row][board_column]['text'] == ' ' and order == -1:
         board[board_row][board_column]['text'] = '0'
@@ -56,15 +55,20 @@ def horizontal_test():
 order = 1
 board = create_board()
 window = tk.Tk()
-window.geometry('500x500')
+window.geometry('600x600')
 window.title('Tic Tac Toe')
 
 board = board.tolist()
 
-for r in range(5):
-    for c in range(5):
-        board[r][c] = tk.Button(text=board[r][c], height=4, width=8, command=lambda: movement(r, c))
-        board[r][c].grid(row=r, column=c)
+for i in range(5):
+    for j in range(5):
+        board[i][j] = tk.Button(
+            text=board[i][j],
+            font=('normal', 40, 'normal'),
+            height=2, width=4,
+            command=lambda r=i, c=j: movement(r, c)
+        )
+        board[i][j].grid(row=i, column=j)
 
 
 player_turn = tk.Label(text=f"Player {order} turn", font=('normal', 22, 'bold'))
